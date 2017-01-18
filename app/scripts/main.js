@@ -72,5 +72,14 @@
     });
   }
 
+  _500px.init({
+    sdk_key: '43d33051eedd5ff49abe53986f0c1bcd8f5a8c13',
+    oauth_token: '1qpcJQZmJOaLHnGcCXcx0mHjwl4hnalLaOMKKjpU'
+  });
+  // When the user logs in we will pull their favorite photos
+  _500px.api('/users/20937157/galleries/26117475/items', { page: 1, image_size: 1600 }, function (response) {
+    console.log(response.data.photos);
+  });
+
   // Your custom JavaScript goes here
 })();

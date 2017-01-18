@@ -45,15 +45,71 @@ h3 {
 
   background-image: -webkit-linear-gradient(22deg, rgba(0, 169, 157, .85), rgba(0, 183, 255, .85)), url('../images/hawaii-nolli.PNG');
   background-image: linear-gradient(68deg, rgba(0, 169, 157, .85), rgba(0, 183, 255, .85)), url('../images/hawaii-nolli.PNG');
-  background-position: 0px 0px, 50% 50%;
-  background-size: auto, cover;
-  background-repeat: repeat, no-repeat;
+
 }
 
 .left.fiji {
 
   background-image: -webkit-linear-gradient(22deg, rgba(251, 135, 43, .85), rgba(217, 224, 33, .85)), url('../images/fiji-nolli.PNG');
   background-image: linear-gradient(68deg, rgba(251, 135, 43, .85), rgba(217, 224, 33, .85)), url('../images/fiji-nolli.PNG');
+}
+
+.left.nz {
+  background-image: -webkit-linear-gradient(22deg, rgba(49, 42, 108, .85), rgba(133, 45, 145, .85)), url('../images/new-zealand-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(49, 42, 108, .85), rgba(133, 45, 145, .85)), url('../images/new-zealand-nolli.PNG');
+
+}
+
+.left.aus {
+  background-image: -webkit-linear-gradient(22deg, rgba(0, 83, 126, .85), rgba(58, 161, 126, .85)), url('../images/australia-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(0, 83, 126, .85), rgba(58, 161, 126, .85)), url('../images/australia-nolli.PNG');
+
+}
+
+.left.bali {
+  background-image: -webkit-linear-gradient(22deg, rgba(0, 255, 238, .85), rgba(213, 133, 255, .85)), url('../images/hawaii-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(0, 255, 238, .85), rgba(213, 133, 255, .85)), url('../images/hawaii-nolli.PNG');
+
+}
+
+.left.singapore {
+  background-image: -webkit-linear-gradient(22deg, rgba(184, 104, 10, .85), rgba(242, 70, 69, .85)), url('../images/singapore-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(184, 104, 10, .85), rgba(242, 70, 69, .85)), url('../images/singapore-nolli.PNG');
+
+}
+
+.left.thailand {
+  background-image: -webkit-linear-gradient(22deg, rgba(0, 146, 69, .85), rgba(252, 238, 33, .85)), url('../images/thailand-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(0, 146, 69, .85), rgba(252, 238, 33, .85)), url('../images/thailand-nolli.PNG');
+
+}
+
+.left.phil {
+  background-image: -webkit-linear-gradient(22deg, rgba(237, 28, 36, .85), rgba(252, 238, 33, .85)), url('../images/coron-elnido-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(237, 28, 36, .85), rgba(252, 238, 33, .85)), url('../images/coron-elnido-nolli.PNG');
+
+}
+
+.left.shanghai {
+  background-image: -webkit-linear-gradient(22deg, rgba(69, 20, 90, .85), rgba(178, 34, 34, .85)), url('../images/shanghai-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(69, 20, 90, .85), rgba(178, 34, 34, .85)), url('../images/shanghai-nolli.PNG');
+
+}
+
+.left.japan {
+  background-image: -webkit-linear-gradient(22deg, rgba(79, 0, 188, .85), rgba(41, 171, 226, .85)), url('../images/japan-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(79, 0, 188, .85), rgba(41, 171, 226, .85)), url('../images/japan-nolli.PNG');
+  background-position: 0px 0px, 50% 50%;
+  background-size: auto, cover;
+  background-repeat: repeat, no-repeat;
+}
+
+.left.budapest {
+  background-image: -webkit-linear-gradient(22deg, rgba(255, 255, 126, .85), rgba(0, 168, 197, .85)), url('../images/budapest-nolli.PNG');
+  background-image: linear-gradient(68deg, rgba(255, 255, 126, .85), rgba(0, 168, 197, .85)), url('../images/budapest-nolli.PNG');
+  background-position: 0px 0px, 50% 50%;
+  background-size: auto, cover;
+  background-repeat: repeat, no-repeat;
 }
 
 .right {
@@ -155,6 +211,7 @@ h3 {
   background-color: #fff;
 }
 
+
 .place-h2 {
   font-family: Poppins, sans-serif;
   color: #fff;
@@ -251,7 +308,7 @@ h3 {
     transition: height 99999999s;
     justify-content: center;
     position: relative;
-    opacity: 1;
+    opacity: 1 !important;
     display: flex;
     float: left;
     height: 60vh;
@@ -278,8 +335,9 @@ h3 {
     margin-left: 0px;
   }
   .horiz-line {
+    width: 40px;
     display: block;
-    margin: 10px auto 20px;
+    margin: 10px auto 30px;
   }
   .place-h2 {
     text-shadow: none;
@@ -335,6 +393,4 @@ h3 {
     line-height: 1rem;
   }
 }
-
-
 
