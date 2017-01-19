@@ -269,6 +269,10 @@ h3 {
   padding-left: 0px;
 }
 
+.project-detail{
+    
+}
+
 @media (max-width: 991px) {
   .arrow {
     display: none;
