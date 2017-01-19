@@ -100,6 +100,9 @@
       <div class="content">
         <h2>Boston, Massachussetss</h2>
         <h4>February 1</h4>
+
+        <div class="fav-list">
+        </div>
       </div>
 
     </div>
@@ -410,19 +413,76 @@
       <div class="menu-line w-hidden-small w-hidden-tiny"><img class="logo" src="images/untitled-1.png" width="50">
       </div>
     </div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+      <!-- Background of PhotoSwipe. 
+          It's a separate element as animating opacity is faster than rgba(). -->
+      <div class="pswp__bg"></div>
+      <!-- Slides wrapper with overflow:hidden. -->
+      <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+              PhotoSwipe keeps only 3 of them in the DOM to save memory.
+              Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+          <div class="pswp__top-bar">
+            <!--  Controls are self-explanatory. Order can be changed. -->
+            <div class="pswp__counter"></div>
+            <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+            <button class="pswp__button pswp__button--share" title="Share"></button>
+            <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+            <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+            <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+            <!-- element will get class pswp__preloader--active when preloader is running -->
+            <div class="pswp__preloader">
+              <div class="pswp__preloader__icn">
+                <div class="pswp__preloader__cut">
+                  <div class="pswp__preloader__donut"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+            <div class="pswp__share-tooltip"></div>
+          </div>
+          <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+              </button>
+          <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+              </button>
+          <div class="pswp__caption">
+            <div class="pswp__caption__center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    var images = $(".left"),
-      items = $(".item"),
-      place = $(".place-title"),
-      projectDetail = $('.project-detail');
+   _500px.init({
+      sdk_key: '43d33051eedd5ff49abe53986f0c1bcd8f5a8c13',
+      oauth_token: '1qpcJQZmJOaLHnGcCXcx0mHjwl4hnalLaOMKKjpU'
+    });
+    _500px.api('/users/20937157/galleries', (resp) => console.log("galleries", resp));
+
+    var 
+        items = $(".item"),
+        place = $(".place-title"),
+        projectDetail = $('.project-detail'),
+        left = $('.left'),
+        right = $('.right'),
+        letter = $('.letter'),
+        place = $('.place');
 
 
     var lastAnim = null;
     items.each(function (index, element) {
-      if (images[index] && place[index]) {
-        var tw1 = TweenLite.to(images[index], 0.2, { opacity: 1, paused: index == 0 ? false : true })
+      if (left[index] && place[index]) {
+        var tw1 = TweenLite.to(left[index], 0.2, { opacity: 1, paused: index == 0 ? false : true })
         //  var tw2 = new TweenLite.from(place[index], 0.2, {autoAlpha: 0, x: -100, paused: index == 0 ? false: true})
         element.animation = tw1;
       }
@@ -436,16 +496,7 @@
       lastAnim = this.animation;
     }
 
-
-    items.hover(over);
-    items.click(() => enterProjectAnim.play())
-
-    var left = $('.left'),
-      right = $('.right'),
-      letter = $('.letter'),
-      place = $('.place');
-
-    let enterProjectAnim = new TimelineLite()
+    let enterProjectAnim = new TimelineLite().pause()
 
     enterProjectAnim.to([place, letter, right], 0.5, {
       autoAlpha: 0,
@@ -460,6 +511,72 @@
       ease: Power3.easeOut
     })
 
+    let displayDay = (num) => {
+        // When the user logs in we will pull their favorite photos
+      _500px.api('/users/20937157/galleries/26117421/items', {
+        page: 1,
+        image_size: 1600
+      }, function (response) {
+        response.data.photos.forEach((img, index) => {
+          // console.log(img)
+          let temp = $('<div  ng-repeat="img in imgs" style="flex-grow:' + img.width * 100 / img.height +
+            '; flex-basis:' + img.width * 200 / img.height +
+            'px;">\
+                        <i style="padding-bottom:' + img.height /
+            img.width * 100 + '%"></i>\
+                        <img data-index="' + index + '" src="' + img.image_url +
+            '" />');
+
+          $('.fav-list').append(temp);
+
+          let item = {
+            src: img.image_url,
+            w: img.width,
+            h: img.height
+          }
+          items.push(item)
+
+          let pswpElement = document.querySelectorAll('.pswp')[0];
+
+          temp.click((e) => {
+            var options = {
+              history: false,
+              focus: false,
+              showHideOpacity: true,
+              showAnimationDuration: 500,
+              hideAnimationDuration: 500,
+              escKey: true,
+              zoomEl: false,
+              shareEl: false,
+              preloaderEl: true,  
+              tapToToggleControls: true,
+              index: parseInt($(e.target).attr('data-index'), 10)
+            };
+            var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);  
+            gallery.init()
+          
+          })
+        })
+
+        for (let i = 0; i < 5; i++) {
+          $('.fav-list').append($('<div class="placeholder"></div>'));
+        }
+
+      });    
+    }
+
+
+
+
+    items.hover(over);
+    items.click(() => {
+      enterProjectAnim.play()
+      displayDay();
+    })
+
+  
+
+    
   </script>
 
 <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
