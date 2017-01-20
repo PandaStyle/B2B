@@ -7,38 +7,39 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Boston To Budapest</title>
-
   <!-- Disable tap highlight on IE -->
   <meta name="msapplication-tap-highlight" content="no">
-
   <!-- Web Application Manifest -->
   <link rel="manifest" href="manifest.json">
-
   <!-- Color the status bar on mobile devices -->
   <meta name="theme-color" content="#000">
-
   <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
   <!--
     <link rel="canonical" href="http://www.example.com/">
     -->
-
   <link rel="stylesheet" href="styles/main.css">
-  <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:400,500,700,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="photoswipe/photoswipe.css">
+  <link rel="stylesheet" href="photoswipe/default-skin/default-skin.css">
+  <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
+  <script src="photoswipe/photoswipe.js"></script>
+  <script src="photoswipe/photoswipe-ui-default.js"></script>
   <script src="scripts/500px.js" type="text/javascript"></script>
-
   <script type="text/javascript">
     WebFont.load({
       google: {
-        families: ["PT Sans:400,400italic,700,700italic", "Unna:regular", "Vidaloka:regular", "Cantata One:regular", "Poppins:regular,500,600,700", ""]
+        families: ["PT Sans:400,400italic,700,700italic", "Unna:regular", "Vidaloka:regular", "Cantata One:regular",
+          "Poppins:regular,500,600,700", ""
+        ]
       }
     });
-  </script>
 
-<link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
-<link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
+  </script>
+  <link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+  <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
 </head>
 
 <body>
@@ -86,25 +87,14 @@
     <div class="project-detail">
       <div class="country-icon"></div>
       <div class="country-name">United States of America</div>
-
       <div class="tabs">
-        <div>Day 1</div>
-        <div>Day 2</div>
-        <div class="selected">Day 3</div>
-        <div>Day 5</div>
-        <div>Day 6</div>
-        <div>Day 7</div>
-        <div>Day 8</div>
       </div>
-
       <div class="content">
-        <h2>Boston, Massachussetss</h2>
-        <h4>February 1</h4>
-
-        <div class="fav-list">
-        </div>
+        <h2 class="city-name"></h2>
+          <h4 class="date"></h4>
+          <div class="fav-list">
+          </div>
       </div>
-
     </div>
     <div class="left-column w-col w-col-6">
       <div class="boston left">
@@ -298,7 +288,7 @@
           </div>
           <div class="arrow"></div>
           <div class="title">
-            <h3 class="item-h3">Boston</h3>
+            <h3 class="item-h3" data-country="Boston">Boston</h3>
           </div>
         </div>
         <div class="item w-clearfix">
@@ -307,7 +297,7 @@
           </div>
           <div class="arrow"></div>
           <div class="title">
-            <h3 class="item-h3">California</h3>
+            <h3 class="item-h3" data-country="California">California</h3>
           </div>
         </div>
         <div class="item w-clearfix">
@@ -316,7 +306,7 @@
           </div>
           <div class="arrow"></div>
           <div class="title">
-            <h3 class="item-h3">Hawaii</h3>
+            <h3 class="item-h3" data-country="Hawaii">Hawaii</h3>
           </div>
         </div>
         <div class="item w-clearfix">
@@ -325,7 +315,7 @@
           </div>
           <div class="arrow"></div>
           <div class="title">
-            <h3>Fiji</h3>
+            <h3 class="item-h3" data-country="Boston">Fiji</h3>
           </div>
         </div>
         <div class="item w-clearfix">
@@ -334,7 +324,7 @@
           </div>
           <div class="arrow"></div>
           <div class="title">
-            <h3>New Zealand</h3>
+            <h3 class="item-h3" data-country="NewZealand">New Zealand</h3>
           </div>
         </div>
         <div class="item w-clearfix">
@@ -461,28 +451,131 @@
       </div>
     </div>
   </div>
-
   <script>
-   _500px.init({
+    const days = {
+      "Boston": {
+        countryName: "United States of America",
+        days: {
+          '0': {
+            city: "Boston, Massachussets",
+            date: "until February 1"
+          }
+        }
+      },
+      "California": {
+        countryName: "United States of America",
+        days: {
+          '1': {
+            city: "Los Angeles",
+            date: "February 1"
+          },
+          '2': {
+            city: "Los Angeles",
+            date: "February 2"
+          },
+          '3': {
+            city: "Los Angeles",
+            date: "February 3"
+          },
+          '4': {
+            city: "",
+            date: "February 4"
+          },
+          '5': {
+            city: "",
+            date: "February 5"
+          },
+          '6': {
+            city: "",
+            date: "February 6"
+          },
+          '7': {
+            city: "",
+            date: "February 7"
+          },
+          '8': {
+            city: "",
+            date: "February 8"
+          },
+        }
+      },
+      "Hawaii": {
+        countryName: "United States of America",
+        days: {
+          '9': {
+            city: "",
+            date: "February 9"
+          },
+          '10': {
+            city: "",
+            date: "February 10"
+          },
+          '11': {
+            city: "",
+            date: "February 11"
+          },
+          '12': {
+            city: "",
+            date: "February 12"
+          },
+          '13': {
+            city: "",
+            date: "February 13"
+          },
+          '14': {
+            city: "",
+            date: "February 14"
+          },
+          '15': {
+            city: "",
+            date: "February 15"
+          },
+          '16': {
+            city: "",
+            date: "February 16"
+          },
+          '17': {
+            city: "",
+            date: "February 17"
+          }
+        }
+      }
+    }
+
+  
+
+    _500px.init({
       sdk_key: '43d33051eedd5ff49abe53986f0c1bcd8f5a8c13',
       oauth_token: '1qpcJQZmJOaLHnGcCXcx0mHjwl4hnalLaOMKKjpU'
     });
-    _500px.api('/users/20937157/galleries', (resp) => console.log("galleries", resp));
+    _500px.api('/users/20937157/galleries', {
+      privacy: 'both'
+    }, (resp) => {
+      console.log("galleries", resp);
+      let a = _.find(resp.data.galleries, {
+        name: "day 0"
+      })
+      console.log(a);
+    });
 
-    var 
-        items = $(".item"),
-        place = $(".place-title"),
-        projectDetail = $('.project-detail'),
-        left = $('.left'),
-        right = $('.right'),
-        letter = $('.letter'),
-        place = $('.place');
+    var
+      items = $(".item"),
+      place = $(".place-title"),
+      projectDetail = $('.project-detail'),
+      left = $('.left'),
+      right = $('.right'),
+      letter = $('.letter'),
+      place = $('.place');
 
 
     var lastAnim = null;
+
     items.each(function (index, element) {
       if (left[index] && place[index]) {
-        var tw1 = TweenLite.to(left[index], 0.2, { opacity: 1, paused: index == 0 ? false : true })
+        var tw1 = TweenLite.to(left[index], 0.2, {
+          opacity: 1,
+          paused: index == 0 ? false : true
+        })
         //  var tw2 = new TweenLite.from(place[index], 0.2, {autoAlpha: 0, x: -100, paused: index == 0 ? false: true})
         element.animation = tw1;
       }
@@ -496,7 +589,7 @@
       lastAnim = this.animation;
     }
 
-    let enterProjectAnim = new TimelineLite().pause()
+    let enterProjectAnim = new TimelineLite().pause();
 
     enterProjectAnim.to([place, letter, right], 0.5, {
       autoAlpha: 0,
@@ -511,93 +604,139 @@
       ease: Power3.easeOut
     })
 
-    let displayDay = (num) => {
+    let displayDay = dayNumber => {
+
+      $('.fav-list').empty();
+
+      _500px.api('/users/20937157/galleries', {
+        privacy: 'both'
+      }, (resp) => {
+        console.log("galleries", resp);
+        let galleryId = _.find(resp.data.galleries, {
+          name: "day " + dayNumber
+        }).id;
+
         // When the user logs in we will pull their favorite photos
-      _500px.api('/users/20937157/galleries/26117421/items', {
-        page: 1,
-        image_size: 1600
-      }, function (response) {
-        response.data.photos.forEach((img, index) => {
-          // console.log(img)
-          let temp = $('<div  ng-repeat="img in imgs" style="flex-grow:' + img.width * 100 / img.height +
-            '; flex-basis:' + img.width * 200 / img.height +
-            'px;">\
+        _500px.api('/users/20937157/galleries/' + galleryId + '/items', {
+          page: 1,
+          image_size: 1600,
+
+        }, function (response) {
+          let galleryItems = [];
+          response.data.photos.forEach((img, index) => {
+            let temp = $('<div  ng-repeat="img in imgs" style="flex-grow:' + img.width * 100 / img.height +
+              '; flex-basis:' + img.width * 200 / img.height +
+              'px;">\
                         <i style="padding-bottom:' + img.height /
-            img.width * 100 + '%"></i>\
-                        <img data-index="' + index + '" src="' + img.image_url +
-            '" />');
+              img.width * 100 + '%"></i>\
+                        <img data-index="' + index +
+              '" src="' +
+              img.image_url +
+              '" />');
 
-          $('.fav-list').append(temp);
+            $('.fav-list').append(temp);
 
-          let item = {
-            src: img.image_url,
-            w: img.width,
-            h: img.height
-          }
-          items.push(item)
+            let item = {
+              src: img.image_url,
+              w: img.width,
+              h: img.height
+            }
+            galleryItems.push(item)
 
-          let pswpElement = document.querySelectorAll('.pswp')[0];
+            let pswpElement = document.querySelectorAll('.pswp')[0];
 
-          temp.click((e) => {
-            var options = {
-              history: false,
-              focus: false,
-              showHideOpacity: true,
-              showAnimationDuration: 500,
-              hideAnimationDuration: 500,
-              escKey: true,
-              zoomEl: false,
-              shareEl: false,
-              preloaderEl: true,  
-              tapToToggleControls: true,
-              index: parseInt($(e.target).attr('data-index'), 10)
-            };
-            var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);  
-            gallery.init()
-          
+            temp.click((e) => {
+              var options = {
+                history: false,
+                focus: false,
+                showHideOpacity: true,
+                showAnimationDuration: 500,
+                hideAnimationDuration: 500,
+                escKey: true,
+                zoomEl: false,
+                shareEl: false,
+                preloaderEl: true,
+                tapToToggleControls: true,
+                index: parseInt($(e.target).attr('data-index'), 10)
+              };
+              console.log(galleryItems)
+              var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryItems, options);
+              gallery.init()
+
+            })
           })
-        })
 
-        for (let i = 0; i < 5; i++) {
-          $('.fav-list').append($('<div class="placeholder"></div>'));
-        }
+          for (let i = 0; i < 5; i++) {
+            $('.fav-list').append($('<div class="placeholder"></div>'));
+          }
 
-      });    
+        });
+      });
     }
 
 
 
 
-    items.hover(over);
-    items.click(() => {
+
+    let displayProject = (country) => {
+      $('.country-name').text(country.countryName)
+
+      for (let [key, value] of Object.entries(country.days)) {
+        $('.tabs').append($('<div/>')
+            .attr('data-city', value.city)
+            .attr('data-date', value.date)
+            .attr('data-day', key)
+            .text('Day ' + key))
+      }
+      $('.tabs > div').click(selectDay)
+
+      $('.tabs > div').first().click();
+    }
+
+    let selectDay = (e) => {    
+      $(e.target).siblings().removeClass('selected').end().attr('class', 'selected')
+      $('.content .city-name').text($(e.target).attr('data-city')) 
+      $('.content .date').text($(e.target).attr('data-date')) 
+      displayDay($(e.target).attr('data-day'))
+    }
+
+
+    let projectClickHandler = e => {
+      let country = $(e.target).is('h3') ? $(e.target).attr('data-country') : $(e.target).find('h3.item-h3').attr('data-country');
+      let countryObj = days[country]
       enterProjectAnim.play()
-      displayDay();
-    })
+      console.log(countryObj)
+      displayProject(countryObj);
 
-  
+    }
 
-    
+    items.hover(over);
+    items.click(projectClickHandler)
+
+
   </script>
-
-<!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
-
-
-<!-- build:js scripts/main.min.js -->
-<script src="scripts/main.js"></script>
-<!-- endbuild -->
-
-<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-<script>
-      (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-          (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date(); a = s.createElement(o),
-          m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-      })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
+  <!-- build:js scripts/main.min.js -->
+  <script src="scripts/main.js"></script>
+  <!-- endbuild -->
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
     ga('create', 'UA-89564926-1', 'auto');
     ga('send', 'pageview');
-</script>
-<!-- Built with love using Web Starter Kit -->
+
+  </script>
+  <!-- Built with love using Web Starter Kit -->
 </body>
 
 </html>
