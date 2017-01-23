@@ -18,27 +18,12 @@
     <link rel="canonical" href="http://www.example.com/">
     -->
   <link rel="stylesheet" href="styles/main.css">
-  <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900" rel="stylesheet">
-  <link rel="stylesheet" href="photoswipe/photoswipe.css">
-  <link rel="stylesheet" href="photoswipe/default-skin/default-skin.css">
+  <link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900|Poppins:regular,500,600,700" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
-  <script src="photoswipe/photoswipe.js"></script>
-  <script src="photoswipe/photoswipe-ui-default.js"></script>
-  <script src="scripts/500px.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    WebFont.load({
-      google: {
-        families: ["PT Sans:400,400italic,700,700italic", "Unna:regular", "Vidaloka:regular", "Cantata One:regular",
-          "Poppins:regular,500,600,700", ""
-        ]
-      }
-    });
-
-  </script>
-  <link href="https://daks2k3a4ib2z.cloudfront.net/img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+ 
+  <link href="images/icons/android-icon-192x192.png" rel="shortcut icon" type="image/x-icon">
   <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
 </head>
 
@@ -400,7 +385,7 @@
           </div>
         </div>
       </div>
-      <div class="menu-line w-hidden-small w-hidden-tiny"><img class="logo" src="images/untitled-1.png" width="50">
+      <div class="menu-line w-hidden-small w-hidden-tiny"><img class="logo" src="images/logo-light2.png" width="50">
       </div>
     </div>
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -542,22 +527,6 @@
       }
     }
 
-  
-
-    _500px.init({
-      sdk_key: '43d33051eedd5ff49abe53986f0c1bcd8f5a8c13',
-      oauth_token: '1qpcJQZmJOaLHnGcCXcx0mHjwl4hnalLaOMKKjpU'
-    });
-    _500px.api('/users/20937157/galleries', {
-      privacy: 'both'
-    }, (resp) => {
-      console.log("galleries", resp);
-      let a = _.find(resp.data.galleries, {
-        name: "day 0"
-      })
-      console.log(a);
-    });
-
     var
       items = $(".item"),
       place = $(".place-title"),
@@ -589,131 +558,9 @@
       lastAnim = this.animation;
     }
 
-    let enterProjectAnim = new TimelineLite().pause();
-
-    enterProjectAnim.to([place, letter, right], 0.5, {
-      autoAlpha: 0,
-      ease: Power3.easeOut
-    })
-    enterProjectAnim.to(left, 0.5, {
-      width: '100vw',
-      ease: Power3.easeOut
-    })
-    enterProjectAnim.to(projectDetail, 0.5, {
-      autoAlpha: 1,
-      ease: Power3.easeOut
-    })
-
-    let displayDay = dayNumber => {
-
-      $('.fav-list').empty();
-
-      _500px.api('/users/20937157/galleries', {
-        privacy: 'both'
-      }, (resp) => {
-        console.log("galleries", resp);
-        let galleryId = _.find(resp.data.galleries, {
-          name: "day " + dayNumber
-        }).id;
-
-        // When the user logs in we will pull their favorite photos
-        _500px.api('/users/20937157/galleries/' + galleryId + '/items', {
-          page: 1,
-          image_size: 1600,
-
-        }, function (response) {
-          let galleryItems = [];
-          response.data.photos.forEach((img, index) => {
-            let temp = $('<div  ng-repeat="img in imgs" style="flex-grow:' + img.width * 100 / img.height +
-              '; flex-basis:' + img.width * 200 / img.height +
-              'px;">\
-                        <i style="padding-bottom:' + img.height /
-              img.width * 100 + '%"></i>\
-                        <img data-index="' + index +
-              '" src="' +
-              img.image_url +
-              '" />');
-
-            $('.fav-list').append(temp);
-
-            let item = {
-              src: img.image_url,
-              w: img.width,
-              h: img.height
-            }
-            galleryItems.push(item)
-
-            let pswpElement = document.querySelectorAll('.pswp')[0];
-
-            temp.click((e) => {
-              var options = {
-                history: false,
-                focus: false,
-                showHideOpacity: true,
-                showAnimationDuration: 500,
-                hideAnimationDuration: 500,
-                escKey: true,
-                zoomEl: false,
-                shareEl: false,
-                preloaderEl: true,
-                tapToToggleControls: true,
-                index: parseInt($(e.target).attr('data-index'), 10)
-              };
-              console.log(galleryItems)
-              var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryItems, options);
-              gallery.init()
-
-            })
-          })
-
-          for (let i = 0; i < 5; i++) {
-            $('.fav-list').append($('<div class="placeholder"></div>'));
-          }
-
-        });
-      });
-    }
-
-
-
-
-
-    let displayProject = (country) => {
-      $('.country-name').text(country.countryName)
-
-      for (let [key, value] of Object.entries(country.days)) {
-        $('.tabs').append($('<div/>')
-            .attr('data-city', value.city)
-            .attr('data-date', value.date)
-            .attr('data-day', key)
-            .text('Day ' + key))
-      }
-      $('.tabs > div').click(selectDay)
-
-      $('.tabs > div').first().click();
-    }
-
-    let selectDay = (e) => {    
-      $(e.target).siblings().removeClass('selected').end().attr('class', 'selected')
-      $('.content .city-name').text($(e.target).attr('data-city')) 
-      $('.content .date').text($(e.target).attr('data-date')) 
-      displayDay($(e.target).attr('data-day'))
-    }
-
-
-    let projectClickHandler = e => {
-      let country = $(e.target).is('h3') ? $(e.target).attr('data-country') : $(e.target).find('h3.item-h3').attr('data-country');
-      let countryObj = days[country]
-      enterProjectAnim.play()
-      console.log(countryObj)
-      displayProject(countryObj);
-
-    }
 
     items.hover(over);
-    items.click(projectClickHandler)
-
-
+  
   </script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
   <!-- build:js scripts/main.min.js -->
